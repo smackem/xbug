@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <title>XBug</title>
+        <meta charset="utf-8" />
+        <style>
+            #container {
+                position: relative;
+            }
+            #critter {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                transform: rotate(0deg);
+            }
+            #surface {
+                position: relative;
+                border: 1px solid black;
+            }
+            #ctrlbox {
+                margin-top: 8px;
+                position: absolute;
+                background: #ffc0a0;
+                padding: 4px;
+                left: 450px;
+                top: 0px;
+            }
+            #source {
+                width: 200px;
+                height: 500px;
+            }
+            #runbtn {
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <img id="critter" />
+            <canvas id="surface" />
+        </div>
+        <div id="ctrlbox">
+            <textarea id="source"></textarea>
+            <br />
+            <input type="button" id="runbtn" value="Los!" />
+        </div>
+        <script src="xbug.js" type="text/javascript"></script>
+    </body>
+</html>
