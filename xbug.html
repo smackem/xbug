@@ -26,10 +26,20 @@
             }
             #source {
                 width: 200px;
-                height: 500px;
+                min-height: 300px;
             }
             #runbtn {
                 width: 100%;
+                height: 60px;
+            }
+            #resources {
+                visibility: collapse;
+            }
+            #fuel {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 48pt;
+                font-weight: bold;
+                color: #e0e0e0;
             }
         </style>
     </head>
@@ -38,10 +48,16 @@
             <img id="critter" />
             <canvas id="surface" />
         </div>
+        <span id="fuel"></span>
         <div id="ctrlbox">
             <textarea id="source"></textarea>
             <br />
             <input type="button" id="runbtn" value="Los!" />
+        </div>
+        <div id="resources">
+            <img id="leaf" src="cloverleaf.png"/>
+            <img id="goal" src="flag.png"/>
+            <img id="block" src="spiderweb.png"/>
         </div>
         <script src="xbug.js" type="text/javascript"></script>
     </body>
