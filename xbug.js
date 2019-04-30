@@ -96,25 +96,41 @@ function Program(opcodes, board, critter) {
             critter.stopMoving();
             return false;
         }
+        if (board.fieldAt(critter.col(), critter.row()) == 2) {
+            critter.stopMoving();
+            critter.fuel(0);
+            return false;
+        }
         if (_pc == 0) {
             critter.startMoving();
         }
+        mutateCritter();
+        if (board.fieldAt(critter.col(), critter.row()) == 3) {
+            critter.stopMoving();
+            window.alert("Du hast gewonnen!");
+            return false;
+        }
+        _pc++;
+        return true;
+    };
+
+    function mutateCritter() {
         let col = critter.col();
         let row = critter.row();
         let operation = getCritterOperation(opcodes[_pc]);
         let orientation = operation;
         switch (operation) {
             case 'N':
-                row = critter.row() - 1;
+                row--;
                 break;
             case 'W':
-                col = critter.col() - 1;
+                col--;
                 break;
             case 'E':
-                col = critter.col() + 1;
+                col++;
                 break;
             case 'S':
-                row = critter.row() + 1;
+                row++;
                 break;
             case '*E':
                 orientation = null;
@@ -129,9 +145,7 @@ function Program(opcodes, board, critter) {
         }
         critter.setPosition(col, row);
         critter.fuel(critter.fuel() - 1);
-        _pc++;
-        return true;
-    };
+    }
 
     function getCritterOperation(opcode) {
         switch (opcode) {
@@ -216,6 +230,19 @@ const board = new Board(10, 10, [
 let width = board.cols() * cx;
 let height = board.rows() * cy;
 let critter = new Critter(0, board.rows() - 1);
+let fuelColors = [
+    '#00FF00',
+    '#33FF00',
+    '#66FF00',
+    '#99FF00',
+    '#CCFF00',
+    '#FFFF00',
+    '#FFCC00',
+    '#FF9900',
+    '#FF6600',
+    '#FF3300',
+    '#FF0000',
+];
 let program;
 let ticker;
 
@@ -248,9 +275,6 @@ function render() {
                     ctx.drawImage(leaf, col * cx + 0.5, row * cx + 0.5, cx, cy);
                     break;
                 case 2: // block
-                    // ctx.fillStyle = "black";
-                    // ctx.rect(col * cx + 0.5, row * cx + 0.5, cx, cy);
-                    // ctx.fill();
                     ctx.drawImage(block, col * cx, row * cy);
                     break;
                 case 3: // goal
@@ -266,10 +290,11 @@ function render() {
 
 function tick() {
     fuelGauge.innerText = critter.fuel();
+    fuelGauge.style.color = fuelColors[fuelColors.length - critter.fuel()];
     render();
     if (program.advance()) {
         let code = sourceEdit.value;
-        sourceEdit.value = code.slice(code.indexOf('\n') + 1);
+        sourceEdit.value = code.slice(code.indexOf('\n') + 1).trim();
         ticker = window.setTimeout(tick, 500);
     }
 }
@@ -279,7 +304,7 @@ function run() {
     let opcodes;
     try {
         opcodes = compile(code);
-    } catch(ex) {
+    } catch (ex) {
         window.alert(ex);
     }
     program = new Program(opcodes, board, critter);
